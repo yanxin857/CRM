@@ -3,6 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <display-name>crm</display-name>
+    <!--欢迎页面-->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
     <servlet>
         <servlet-name>UserController</servlet-name>
         <servlet-class>com.bjpowernode.settings.web.controller.UserController</servlet-class>
@@ -12,8 +18,4 @@
         <url-pattern>/settings/user/xxx.do</url-pattern>
     </servlet-mapping>
 
-    <!--欢迎页面-->
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
 </web-app>
