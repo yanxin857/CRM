@@ -9,6 +9,30 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
+    <!--配置web的过滤器 功能: 设置可以读取请求体中和响应体中的中文-->
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>com.bjpowernode.web.filter.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
+    <!--配置web的过滤器 功能: 防止别人知道url直接登录-->
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.bjpowernode.web.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+
+
+
+
     <servlet>
         <servlet-name>UserController</servlet-name>
         <servlet-class>com.bjpowernode.settings.web.controller.UserController</servlet-class>

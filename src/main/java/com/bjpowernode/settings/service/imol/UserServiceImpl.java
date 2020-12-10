@@ -15,6 +15,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(String loginAct, String loginPwd, String ip) throws LoginException {
+
+        System.out.println("进入到验证登录操作");
+
         Map<String,String> map = new HashMap<String,String>();
         map.put("loginAct",loginAct);
         map.put("loginPwd",loginPwd);
