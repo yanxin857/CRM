@@ -29,7 +29,7 @@
     </filter-mapping>
 
     <!--配置web的过滤器 功能: 防止别人知道url直接登录-->
-    <!--<filter>
+    <filter>
         <filter-name>LoginFilter</filter-name>
         <filter-class>com.bjpowernode.web.filter.LoginFilter</filter-class>
     </filter>
@@ -37,7 +37,7 @@
         <filter-name>LoginFilter</filter-name>
         <url-pattern>*.do</url-pattern>
         <url-pattern>*.jsp</url-pattern>
-    </filter-mapping>-->
+    </filter-mapping>
 
 
 

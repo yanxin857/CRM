@@ -1,5 +1,6 @@
 package com.bjpowernode.utils;
 
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -9,10 +10,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class SqlSessionUtil {
-    private static SqlSessionFactory sqlSessionFactory = null;
 
     private SqlSessionUtil() {
     }
+
+    private static SqlSessionFactory sqlSessionFactory;
 
     static{
         String resource = "mybatis-config.xml";
@@ -26,6 +28,7 @@ public class SqlSessionUtil {
     }
 
     private static ThreadLocal<SqlSession> t = new ThreadLocal<SqlSession>();
+
     // 获取SqlSession对象
     public static SqlSession getSqlSession(){
         SqlSession sqlSession = t.get();

@@ -16,27 +16,27 @@ public class TransactionInvocationHandler implements InvocationHandler{
 		
 	}
 
-	@Override
+
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		
-		SqlSession session = null;
+		SqlSession sqlSession = null;
 		
 		Object obj = null;
 		
 		try{
-			session = SqlSessionUtil.getSqlSession();
+			sqlSession = SqlSessionUtil.getSqlSession();
 			
-			obj = method.invoke(target, args);
+			obj = method.invoke(target,args);
 			
-			session.commit();
+			sqlSession.commit();
 		}catch(Exception e){
-			session.rollback();
+			sqlSession.rollback();
 			e.printStackTrace();
 			
 			//处理的是什么异常，继续往上抛什么异常
 			throw e.getCause();
 		}finally{
-			SqlSessionUtil.close(session);
+			SqlSessionUtil.close(sqlSession);
 		}
 		
 		return obj;
@@ -47,7 +47,7 @@ public class TransactionInvocationHandler implements InvocationHandler{
 		return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(),this);
 		
 	}
-	
+
 }
 
 

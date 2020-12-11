@@ -1,11 +1,13 @@
 package com.bjpowernode.settings.web.controller;
 
 import com.bjpowernode.settings.domain.User;
+
 import com.bjpowernode.settings.service.UserService;
-import com.bjpowernode.settings.service.imol.UserServiceImpl;
+import com.bjpowernode.settings.service.impl.UserServiceImpl;
 import com.bjpowernode.utils.MD5Util;
 import com.bjpowernode.utils.PrintJson;
 import com.bjpowernode.utils.ServiceFactory;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,6 +25,7 @@ public class UserController extends HttpServlet {
 
         String path = request.getServletPath();
 
+        // 判断是否为登录操作,后面的else判断是否为注册操作
         if("/settings/user/login.do".equals(path)){
 
             System.out.println("进入到验证登录操作");
