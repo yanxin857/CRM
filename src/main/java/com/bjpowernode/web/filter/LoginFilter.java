@@ -24,7 +24,6 @@ public class LoginFilter implements Filter {
 
             filterChain.doFilter(servletRequest,servletResponse);
 
-        // 没有登录过
         }else{
 
             HttpSession session = request.getSession();
