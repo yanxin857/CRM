@@ -1,5 +1,7 @@
 package com.bjpowernode.workbench.dao;
 
-public interface ActivityDao {
+import com.bjpowernode.workbench.domain.Activity;
 
+public interface ActivityDao {
+    int save(Activity activity);
 }

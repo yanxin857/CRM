@@ -15,5 +15,10 @@
         dataType:"json",
         success:function(data){}
     })
+
+    // 创建时间: 当前系统时间
+    String createTime = DateTimeUtil.getSysTime();
+    // 创建人: 当前登录用户
+    String createBy = ((User) req.getSession().getAttribute("user")).getName();
 </body>
 </html>
