@@ -13,7 +13,7 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
     private UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
 
-    @Override
+
     public User login(String loginAct, String loginPwd, String ip) throws LoginException {
 
         System.out.println("进入到验证登录操作");

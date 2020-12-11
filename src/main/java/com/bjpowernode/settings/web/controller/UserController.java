@@ -69,7 +69,7 @@ public class UserController extends HttpServlet {
                  *      如果对于展现的信息将来还会大量的使用,我们创建一个vo类使用方便
                  *      如果对于展现的信息只有在这个需求中能够使用,那么我们使用map就可以了
                  */
-                Map<String,Object> map = new HashMap<>();
+                Map<String,Object> map = new HashMap<String,Object>();
                 map.put("success",false);
                 map.put("msg",msg);
                 PrintJson.printJsonObj(response,map);
