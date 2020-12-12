@@ -27,4 +27,61 @@
             #{createBy}
         )
     </insert>
+
+    <select id="getActivityListByCondition" resultType="com.bjpowernode.workbench.domain.Activity">
+        select
+        a.id,
+        a.name,
+        u.name as owner,
+        a.startDate,
+        a.endDate
+        from tbl_activity a
+        inner join tbl_user u
+        on  u.id = a.owner
+        <where>
+            <if test="name != null and name != ''">
+                a.name like '%' #{name} '%'
+            </if>
+
+            <!--注意: where语句执行在select语句之前,所以此时应该使用u.name,而不是使用owner-->
+            <if test="owner != null and owner != ''">
+                and u.name like '%' #{owner} '%'
+            </if>
+
+            <if test="startDate != null and startDate != ''">
+                and a.startDate &gt; #{startDate}
+            </if>
+
+            <if test="endDate != null and endDate != ''">
+                and a.endDate &lt; #{endDate}
+            </if>
+        </where>
+        order by a.createTime desc
+        limit #{skipCount},#{pageSize}
+    </select>
+
+    <select id="getTotalByCondition" resultType="java.lang.Integer">
+        select count(*)
+        from tbl_activity a
+        inner join tbl_user u
+        on  u.id = a.owner
+        <where>
+            <if test="name != null and name != ''">
+                a.name like '%' #{name} '%'
+            </if>
+
+            <!--注意: where语句执行在select语句之前,所以此时应该使用u.name,而不是使用owner-->
+            <if test="owner != null and owner != ''">
+                and u.name like '%' #{owner} '%'
+            </if>
+
+            <if test="startDate != null and startDate != ''">
+                and a.startDate &gt; #{startDate}
+            </if>
+
+            <if test="endDate != null and endDate != ''">
+                and a.endDate &lt; #{endDate}
+            </if>
+        </where>
+    </select>
 </mapper>
