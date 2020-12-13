@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,80 @@ public class ActivityController extends HttpServlet {
 
             pageList(req,resp);
 
+        }else if("/workbench/activity/delete.do".equals(path)){
+            delete(req,resp);
+        }else if("/workbench/activity/getUserListAndActivity.do".equals(path)){
+            getUserListAndActivity(req,resp);
+        }else if("/workbench/activity/update.do".equals(path)){
+            update(req,resp);
         }
+    }
+
+    private void update(HttpServletRequest req, HttpServletResponse resp) {
+        System.out.println("执行市场活动修改操作");
+        String id = req.getParameter("id");
+        String owner = req.getParameter("owner");
+        String name = req.getParameter("name");
+        String startDate = req.getParameter("startDate");
+        String endDate = req.getParameter("endDate");
+        String cost = req.getParameter("cost");
+        String description = req.getParameter("description");
+        // 修改时间: 当前系统时间
+        String editTime = DateTimeUtil.getSysTime();
+        // 修改人: 当前登录用户
+        String editBy = ((User) req.getSession().getAttribute("user")).getName();
+
+        Activity a = new Activity();
+        a.setId(id);
+        a.setOwner(owner);
+        a.setName(name);
+        a.setStartDate(startDate);
+        a.setEndDate(endDate);
+        a.setCost(cost);
+        a.setDescription(description);
+        a.setEditTime(editTime);
+        a.setEditBy(editBy);
+
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+
+        boolean flag = as.update(a);
+
+        PrintJson.printJsonFlag(resp,flag);
+    }
+
+    private void getUserListAndActivity(HttpServletRequest req, HttpServletResponse resp) {
+
+        System.out.println("进入到查询用户信息列表和根据市场活动id查询单条记录的操作");
+
+        String id = req.getParameter("id");
+
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+        /**
+         * 总结:
+         *      controller调用service的方法,返回值是什么
+         *      你得想一想前端要什么,就要从service层取什么
+         *
+         *  前端需要的,管业务层去要
+         * uList
+         * a
+         *
+         * 以上两项信息,复用率不高,我们选择使用map打包这两项信息即可
+         * map
+         */
+        Map<String,Object> map = as.getUserListAndActivity(id);
+        PrintJson.printJsonObj(resp,map);
+    }
+
+
+    private void delete(HttpServletRequest req, HttpServletResponse resp) {
+
+        System.out.println("执行市场活动的删除操作");
+        String[] ids = req.getParameterValues("id");
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        boolean flag = as.delete(ids);
+        PrintJson.printJsonFlag(resp,flag);
     }
 
     private void pageList(HttpServletRequest req, HttpServletResponse resp) {
@@ -55,10 +129,10 @@ public class ActivityController extends HttpServlet {
         String endDate = req.getParameter("endDate");
         String pageNoStr = req.getParameter("pageNo");
         int pageNo = Integer.valueOf(pageNoStr);
-        // 每页展现的记录树
+        // 每页展现的记录数
         String pageSizeStr = req.getParameter("pageSize");
         int pageSize = Integer.valueOf(pageSizeStr);
-        // 计算出略过的记录树
+        // 计算出略过的记录数
         int skipCount = (pageNo-1) * pageSize;
 
         Map<String,Object> map = new HashMap<String, Object>();
@@ -67,7 +141,7 @@ public class ActivityController extends HttpServlet {
         map.put("startDate",startDate);
         map.put("endDate",endDate);
 
-        // 因为一下两条信息不在domain类中,所以选择使用map进行传值
+        // 因为以下两条信息不在domain类中,所以选择使用map进行传值(<parameterType>传值不能使用vo类,<resultType>传值可以使用vo类)
         map.put("pageSize",pageSize);
         map.put("skipCount",skipCount);
 
@@ -127,6 +201,8 @@ public class ActivityController extends HttpServlet {
         activity.setEndDate(endDate);
         activity.setCost(cost);
         activity.setDescription(description);
+        activity.setCreateTime(createTime);
+        activity.setCreateBy(createBy);
 
         ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
 
