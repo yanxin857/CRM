@@ -7,6 +7,7 @@ import com.bjpowernode.vo.PaginationVo;
 import com.bjpowernode.workbench.dao.ActivityDao;
 import com.bjpowernode.workbench.dao.ActivityRemarkDao;
 import com.bjpowernode.workbench.domain.Activity;
+import com.bjpowernode.workbench.domain.ActivityRemark;
 import com.bjpowernode.workbench.service.ActivityService;
 
 import java.util.HashMap;
@@ -85,4 +86,75 @@ public class ActivityServiceImpl implements ActivityService {
         }
         return flag;
     }
+
+
+    public Activity detail(String id) {
+        Activity activity = activityDao.detail(id);
+        return activity;
+    }
+
+    public List<ActivityRemark> getRemarkListByAid(String activityId) {
+        List<ActivityRemark> arList = activityRemarkDao.getRemarkListByAid(activityId);
+        return arList;
+    }
+
+    public boolean deleteRemarkById(String id) {
+
+        boolean flag = true;
+
+        Integer count = activityRemarkDao.deleteRemarkById(id);
+
+        if(count != 1){
+
+            flag = false;
+
+        }
+
+        return flag;
+    }
+
+    public boolean saveRemark(ActivityRemark ar) {
+        int count = activityRemarkDao.saveRemark(ar);
+
+        boolean flag = true;
+
+        if(count != 1){
+            flag = false;
+        }
+
+        return flag;
+    }
+
+    public boolean updateRemark(ActivityRemark ar) {
+        int count = activityRemarkDao.updateRemark(ar);
+
+        boolean flag = true;
+
+        if(count != 1){
+            flag = false;
+        }
+        return flag;
+    }
+
+    public List<Activity> getActivityListByClueId(String clueId) {
+
+        List<Activity> aList = activityDao.getActivityListByClueId(clueId);
+        return aList;
+    }
+
+    public List<Activity> getActivityListByNameAndNotByClueId(Map<String, String> map) {
+
+        List<Activity> aList = activityDao.getActivityListByNameAndNotByClueId(map);
+
+        return aList;
+
+    }
+
+    public List<Activity> getActivityListByName(String aname) {
+
+        List<Activity> aList = activityDao.getActivityListByName(aname);
+
+        return aList;
+    }
+
 }

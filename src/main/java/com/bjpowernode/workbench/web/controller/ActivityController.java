@@ -9,6 +9,7 @@ import com.bjpowernode.utils.ServiceFactory;
 import com.bjpowernode.utils.UUIDUtil;
 import com.bjpowernode.vo.PaginationVo;
 import com.bjpowernode.workbench.domain.Activity;
+import com.bjpowernode.workbench.domain.ActivityRemark;
 import com.bjpowernode.workbench.service.ActivityService;
 import com.bjpowernode.workbench.service.impl.ActivityServiceImpl;
 
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,13 +44,142 @@ public class ActivityController extends HttpServlet {
             pageList(req,resp);
 
         }else if("/workbench/activity/delete.do".equals(path)){
+
             delete(req,resp);
+
         }else if("/workbench/activity/getUserListAndActivity.do".equals(path)){
+
             getUserListAndActivity(req,resp);
+
         }else if("/workbench/activity/update.do".equals(path)){
+
             update(req,resp);
+
+        }else if("/workbench/activity/detail.do".equals(path)){
+
+            detail(req,resp);
+
+        }else if("/workbench/activity/getRemarkListByAid.do".equals(path)){
+
+            getRemarkListByAid(req,resp);
+
+        }else if("/workbench/activity/deleteRemarkById.do".equals(path)){
+
+            deleteRemarkById(req,resp);
+
+        }else if("/workbench/activity/saveRemark.do".equals(path)){
+
+            saveRemark(req,resp);
+
+        }else if("/workbench/activity/updateRemark.do".equals(path)){
+
+            updateRemark(req,resp);
+
         }
     }
+
+    private void updateRemark(HttpServletRequest req, HttpServletResponse resp) {
+
+        System.out.println("执行修改备注的操作");
+
+        String id = req.getParameter("id");
+        String noteContent = req.getParameter("noteContent");
+        String editTime = DateTimeUtil.getSysTime();
+        String editBy = ((User)req.getSession().getAttribute("user")).getName();
+        String editFlag = "1";
+
+        ActivityRemark ar = new ActivityRemark();
+        ar.setId(id);
+        ar.setNoteContent(noteContent);
+        ar.setEditTime(editTime);
+        ar.setEditBy(editBy);
+        ar.setEditFlag(editFlag);
+
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+        boolean flag = as.updateRemark(ar);
+
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("success",flag);
+        map.put("ar",ar);
+
+        PrintJson.printJsonObj(resp,map);
+    }
+
+    private void saveRemark(HttpServletRequest req, HttpServletResponse resp) {
+
+        System.out.println("执行添加备注操作");
+        String noteContent = req.getParameter("noteContent");
+        String activityId = req.getParameter("activityId");
+        String id = UUIDUtil.getUUID();
+        String createTime = DateTimeUtil.getSysTime();
+        String createBy = ((User)req.getSession().getAttribute("user")).getName();
+        String editFlag = "0";
+
+        ActivityRemark ar = new ActivityRemark();
+        ar.setId(id);
+        ar.setActivityId(activityId);
+        ar.setNoteContent(noteContent);
+        ar.setCreateBy(createBy);
+        ar.setCreateTime(createTime);
+        ar.setEditFlag(editFlag);
+
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+        boolean flag = as.saveRemark(ar);
+
+        /**
+         * data
+         *      {"success":true/false,"ar":{备注}}
+         */
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("success",flag);
+        map.put("ar",ar);
+
+        PrintJson.printJsonObj(resp,map);
+    }
+
+    private void deleteRemarkById(HttpServletRequest req, HttpServletResponse resp) {
+
+        System.out.println("删除备注操作");
+
+        String id = req.getParameter("id");
+
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+        boolean flag = as.deleteRemarkById(id);
+
+        PrintJson.printJsonFlag(resp,flag);
+    }
+
+    private void getRemarkListByAid(HttpServletRequest req, HttpServletResponse resp) {
+
+        System.out.println("根据市场活动id,取得备注信息列表");
+
+        String activityId = req.getParameter("activityId");
+
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+        List<ActivityRemark> arList = as.getRemarkListByAid(activityId);
+
+        PrintJson.printJsonObj(resp,arList);
+    }
+
+    private void detail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        System.out.println("进入到跳转到详细信息页的操作");
+
+        String id = req.getParameter("id");
+
+        ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+        Activity activity = as.detail(id);
+
+        req.setAttribute("activity",activity);
+
+        req.getRequestDispatcher("/workbench/activity/detail.jsp").forward(req,resp);
+    }
+
 
     private void update(HttpServletRequest req, HttpServletResponse resp) {
         System.out.println("执行市场活动修改操作");

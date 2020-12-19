@@ -33,7 +33,7 @@ public class TransactionInvocationHandler implements InvocationHandler{
 			sqlSession.rollback();
 			e.printStackTrace();
 			
-			//处理的是什么异常，继续往上抛什么异常
+			//处理的是什么异常，就继续往上抛什么异常
 			throw e.getCause();
 		}finally{
 			SqlSessionUtil.close(sqlSession);
