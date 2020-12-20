@@ -242,28 +242,28 @@ public class ClueServiceImpl implements ClueService {
         }
 
         // (8)删除线索备注
-        /*for(ClueRemark clueRemark : clueRemarkList){
+        for(ClueRemark clueRemark : clueRemarkList){
 
             int count8 = clueRemarkDao.delete(clueRemark);
             if(count8 != 1){
                 flag = false;
             }
-        }*/
+        }
 
         // (9)删除线索和市场活动的关系
-        /*for(ClueActivityRelation clueActivityRelation : clueActivityRelationList){
+        for(ClueActivityRelation clueActivityRelation : clueActivityRelationList){
 
             int count9 = clueActivityRelationDao.delete(clueActivityRelation);
             if(count9 != 1){
                 flag = false;
             }
-        }*/
+        }
 
         // (10)删除线索
-        /*int count10 = clueDao.delete(clueId);
+        int count10 = clueDao.delete(clueId);
         if(count10 != 1){
             flag = false;
-        }*/
+        }
 
         return flag;
     }
