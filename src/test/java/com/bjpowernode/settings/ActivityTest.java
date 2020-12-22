@@ -7,6 +7,9 @@ import com.bjpowernode.workbench.service.ActivityService;
 import com.bjpowernode.workbench.service.impl.ActivityServiceImpl;
 import org.junit.Test;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * JUnit:
  *      单元测试
@@ -29,8 +32,6 @@ public class ActivityTest {
     }
     @Test
     public void testDelete(){
-
-
 
     }
 }

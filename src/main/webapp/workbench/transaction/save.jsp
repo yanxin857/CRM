@@ -119,7 +119,7 @@ Map<String,String> pMap = (Map<String, String>) application.getAttribute("pMap")
 			// 为阶段的下拉框,绑定选中下拉框的事件,根据选中的阶段填写可能性
 			$("#create-stage").change(fun1);
 
-			// 未保存按钮绑定事件,执行交易添加操作
+			// 为保存按钮绑定事件,执行交易添加操作
 			$("#saveTranBtn").click(saveTranBtn);
 		}
 

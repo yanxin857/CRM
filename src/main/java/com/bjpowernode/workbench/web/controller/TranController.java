@@ -60,7 +60,30 @@ public class TranController extends HttpServlet {
 
             changeStage(req,resp);
 
+        }else if("/workbench/transaction/getChars.do".equals(path)){
+
+            getChars(req,resp);
+
         }
+    }
+
+    private void getChars(HttpServletRequest req, HttpServletResponse resp) {
+
+        System.out.println("取得交易阶段数量统计图标的数据");
+
+        TranService ts = (TranService) ServiceFactory.getService(new TranServiceImpl());
+
+        /**
+         * 业务层为我们返回
+         *  total
+         *  dataList
+         *
+         *  通过map打包以上两项进行返回
+         */
+        Map<String,Object> map = ts.getChars();
+
+        PrintJson.printJsonObj(resp,map);
+
     }
 
     private void changeStage(HttpServletRequest req, HttpServletResponse resp) {
